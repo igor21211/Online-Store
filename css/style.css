@@ -266,6 +266,9 @@ body {
     cursor: pointer;
     font-size: 1em;
   }
+  .product-info img {
+    width: 60px;
+  }
 
   .cart-item {
     background-color: #fff;
@@ -357,4 +360,3 @@ body {
     width: 100%;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
   }
-  

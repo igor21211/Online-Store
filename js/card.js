@@ -26,7 +26,12 @@ if(id && id != 'cart'){
 }
 })
 
+function getItemFromLocaleStorage(){
+    return JSON.parse(localStorage.getItem('product-cart'));
+}
+
 function renderCard(data){
+    const localData = getItemFromLocaleStorage();
     mainDiv.innerHTML = '';
     const productDiv = document.createElement('div');
     productDiv.classList.add('product-card');
@@ -44,7 +49,7 @@ function renderCard(data){
     <div class="product-discount">Discount: ${data.discountPercentage}</div>
     <div class="product-rating">Rating: ${data.rating}</div>
     <div class="product-stock">In Stock: ${data.stock}</div>
-    <button value="${data.id}">Add to Cart</button>
+    ${localData && localData.length > 0 && localData.some(item => parseInt(item.id) === data.id) ? '<img src="img/shopping-cart-icon.svg" alt="icon-favorite">': ` <button value="${data.id}">Add to Cart</button>`}
   </div>
     `;
     mainDiv.appendChild(productDiv);
@@ -67,6 +72,7 @@ mainDiv.addEventListener('click', function(e){
         const productDataArray = productArrayFromStorage ? JSON.parse(productArrayFromStorage) : [];
 
         const productPromise =  getByIdCard(target.value);
+        console.log(target.value);
         productPromise.then(data => {
         productDataArray.push(data)
          localStorage.setItem('product-cart', JSON.stringify(productDataArray));

@@ -37,7 +37,6 @@ renderHeader();
 
 mainenDiv.addEventListener('click', function(e){
     if(e.target.textContent === 'Add to Cart'){
-        console.log('here');
        document.querySelector('.count-cart').textContent = getCountInCart();
     }
 })

@@ -1,6 +1,11 @@
  const main = document.querySelector('.main-content');
+ const headerMain = document.querySelector('.header');
 
- 
+ function getResultSearch(search , callback){
+    fetch(`https://dummyjson.com/products/search?q=${search}`)
+    .then(res => res.json())
+    .then(data => callback(data.products));
+}
  
  function getAllProducts(callback, limit){
     fetch(`https://dummyjson.com/products?limit=${limit}`)
@@ -75,8 +80,7 @@ function renderCardList(data){
         pEl.textContent = element.description;
         spanEl.textContent = '$' + element.price;
         aEl.append(imgEl,h3El,pEl,spanEl)
-        console.log(localData.length > 0);
-        if(localData.length > 0 && localData.some(item => parseInt(item.id) === element.id)){
+        if(localData && localData.length > 0 && localData.some(item => parseInt(item.id) === element.id)){
         productCard.append(aEl);
         }else{
             productCard.append(aEl, btnEl);
@@ -100,4 +104,22 @@ document.querySelector('.sidebar').addEventListener('click', function(e){
      } 
     getCategory(target, renderCardList, 12);
     getCategory(target, renderCarousel, 12);
+})
+
+headerMain.addEventListener('click', function(e){
+    if(e.target.classList.value === 'logo-search'){
+    const value = document.querySelector('.input-search').value;
+    getResultSearch(value,renderCardList);
+    e.preventDefault();
+    }
+    if(e.target.classList.value === 'input-search'){
+        document.querySelector('.input-search').addEventListener('keydown', function(e){
+            if(e.key === 'Enter'){
+                const value = document.querySelector('.input-search').value;
+                console.log(value);
+                getResultSearch(value,renderCardList);
+                e.preventDefault();
+            }
+        })
+    }
 })
