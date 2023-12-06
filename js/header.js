@@ -5,7 +5,7 @@ const mainenDiv = document.querySelector('.main-content');
 function renderHeader(){
     header.innerHTML = `
     <div class="header-div">
-          <a href="/"> <img class="logo" src="img/behance-square-icon.svg" alt="logo"></a>
+          <a href="/Online-store/"> <img class="logo" src="img/behance-square-icon.svg" alt="logo"></a>
        
       <h1>Online Store</h1>
       <div class="search">
