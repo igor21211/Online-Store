@@ -76,6 +76,7 @@ mainDiv.addEventListener('click', function(e){
         productPromise.then(data => {
         productDataArray.push(data)
          localStorage.setItem('product-cart', JSON.stringify(productDataArray));
+         renderCard(data);
         });
     }
     
