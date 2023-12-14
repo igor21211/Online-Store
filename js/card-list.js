@@ -70,6 +70,7 @@ function renderCardList(data) {
     const pEl = document.createElement("p");
     const spanEl = document.createElement("span");
     const btnEl = document.createElement("button");
+    btnEl.classList.add("btn-class-list");
     btnEl.value = element.id;
     btnEl.textContent = "Add to Cart";
     aEl.classList.add("link-card");

@@ -53,7 +53,7 @@ function renderCard(data) {
       localData.length > 0 &&
       localData.some((item) => parseInt(item.id) === data.id)
         ? '<img src="img/shopping-cart-icon.svg" alt="icon-favorite">'
-        : ` <button value="${data.id}">Add to Cart</button>`
+        : ` <button class="card-button" value="${data.id}">Add to Cart</button>`
     }
   </div>
     `;
@@ -72,7 +72,10 @@ mainDiv.addEventListener("click", function (e) {
   if (target.classList.value === "small-img") {
     document.querySelector(".big-img").src = target.src;
   }
-  if (target.textContent === "Add to Cart") {
+  if (
+    target.textContent === "Add to Cart" &&
+    target.classList.value === "card-button"
+  ) {
     const productArrayFromStorage = localStorage.getItem("product-cart");
     const productDataArray = productArrayFromStorage
       ? JSON.parse(productArrayFromStorage)
@@ -83,6 +86,21 @@ mainDiv.addEventListener("click", function (e) {
       productDataArray.push(data);
       localStorage.setItem("product-cart", JSON.stringify(productDataArray));
       renderCard(data);
+    });
+  }
+  if (
+    target.textContent === "Add to Cart" &&
+    target.classList.value === "btn-class-list"
+  ) {
+    const productArrayFromStorage = localStorage.getItem("product-cart");
+    const productDataArray = productArrayFromStorage
+      ? JSON.parse(productArrayFromStorage)
+      : [];
+
+    const productPromise = getByIdCard(target.value);
+    productPromise.then((data) => {
+      productDataArray.push(data);
+      localStorage.setItem("product-cart", JSON.stringify(productDataArray));
     });
   }
 });
