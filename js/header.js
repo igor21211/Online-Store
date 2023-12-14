@@ -26,6 +26,7 @@ function renderHeader() {
 
 function getCountInCart() {
   const count = JSON.parse(localStorage.getItem("product-cart"));
+  console.log(count);
   if (!count) {
     return 0;
   }
@@ -36,8 +37,11 @@ renderHeader();
 mainenDiv.addEventListener("click", function (e) {
   if (
     e.target.textContent === "Add to Cart" ||
-    e.target.textContent === "Place Order"
+    e.target.textContent === "Place Order" ||
+    e.target.textContent === "Remove from Cart"
   ) {
-    document.querySelector(".count-cart").textContent = getCountInCart();
+    setTimeout(() => {
+      renderHeader();
+    }, 1000);
   }
 });

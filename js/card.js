@@ -79,7 +79,6 @@ mainDiv.addEventListener("click", function (e) {
       : [];
 
     const productPromise = getByIdCard(target.value);
-    console.log(target.value);
     productPromise.then((data) => {
       productDataArray.push(data);
       localStorage.setItem("product-cart", JSON.stringify(productDataArray));
