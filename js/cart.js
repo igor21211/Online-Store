@@ -4,8 +4,14 @@ window.addEventListener("hashchange", function (e) {
   const id = window.location.hash.slice(1);
   if (id === "cart") {
     const data = getItemFromLocaleStorage();
-
     renderCart(data);
+  }
+  if (window.location.hash) {
+    history.replaceState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search
+    );
   }
 });
 
@@ -189,7 +195,7 @@ function renderSuccessResult(elements) {
   mainendDiv.innerHTML = `
   <div>
       <h1>Congrats ${elements["fullName"].value}</h1>
-      <p>Your order Number: ${Math.trunc(Math.random(100) + 1)}</p>
+      <p>Your order Number: ${Math.floor(Math.random() * 100) + 1}</p>
       <p>New Post Office Warehouse: ${elements["deliveryPoint"].value}</p>
       <p>Payment Method: ${elements["paymentMethod"].value}</p>
       <p>Quantity of Products: ${elements["quantity"].value}</p>
@@ -197,6 +203,13 @@ function renderSuccessResult(elements) {
   </div>
   `;
   localStorage.clear();
+  if (window.location.hash) {
+    history.replaceState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search
+    );
+  }
 }
 
 function addCitiesToSelect(city) {
