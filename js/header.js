@@ -1,9 +1,8 @@
-const header = document.querySelector('.header');
-const mainenDiv = document.querySelector('.main-content');
+const header = document.querySelector(".header");
+const mainenDiv = document.querySelector(".main-content");
 
-
-function renderHeader(){
-    header.innerHTML = `
+function renderHeader() {
+  header.innerHTML = `
     <div class="header-div">
           <a href="/Online-store/"> <img class="logo" src="img/behance-square-icon.svg" alt="logo"></a>
        
@@ -25,19 +24,20 @@ function renderHeader(){
     `;
 }
 
-
-function getCountInCart(){
-    const count = JSON.parse(localStorage.getItem('product-cart'));
-    if(!count){
-        return 0;
-    }
-    return count.length
+function getCountInCart() {
+  const count = JSON.parse(localStorage.getItem("product-cart"));
+  if (!count) {
+    return 0;
+  }
+  return count.length;
 }
 renderHeader();
 
-mainenDiv.addEventListener('click', function(e){
-    if(e.target.textContent === 'Add to Cart'){
-       document.querySelector('.count-cart').textContent = getCountInCart();
-    }
-})
-
+mainenDiv.addEventListener("click", function (e) {
+  if (
+    e.target.textContent === "Add to Cart" ||
+    e.target.textContent === "Place Order"
+  ) {
+    document.querySelector(".count-cart").textContent = getCountInCart();
+  }
+});
