@@ -205,7 +205,7 @@ function renderSuccessResult(elements) {
       <p>New Post Office Warehouse: ${elements["deliveryPoint"].value}</p>
       <p>Payment Method: ${elements["paymentMethod"].value}</p>
       <p>Quantity of Products: ${elements["quantity"].value}</p>
-      <p>Your order Price: ${elements["quantityPrice"].value}</p>
+      <p>Your order Price: $ ${elements["quantityPrice"].value}</p>
   </div>
   `;
   localStorage.clear();
