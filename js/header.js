@@ -26,6 +26,9 @@ function renderHeader() {
 
 function getCountInCart() {
   const data = JSON.parse(localStorage.getItem("product-cart"));
+  if (!data) {
+    return 0;
+  }
   const count = data.reduce((acc, data) => acc + data.count, 0);
   return count;
 }
