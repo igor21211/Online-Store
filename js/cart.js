@@ -3,8 +3,8 @@ const windowBuy = document.querySelector(".buy-window");
 window.addEventListener("hashchange", function (e) {
   const id = window.location.hash.slice(1);
   if (id === "cart") {
-    const data = getItemFromLocaleStorage();
-    renderCart(data);
+    const response = getItemFromLocaleStorage();
+    renderCart(response);
   }
   if (window.location.hash) {
     history.replaceState(
@@ -34,7 +34,9 @@ function renderCart(data) {
   btnBuy.textContent = "Make Order";
   divTotal.classList.add("cart-total");
   divTotal.innerHTML = `
-    Total: <span>$${getTotalPrice(data)}</span>
+    Total: <span>$${
+      getTotalPrice(data) * data.reduce((acc, data) => acc + data.count, 0)
+    }</span>
     `;
   divTotal.appendChild(btnBuy);
   divCart.append(divTotal);
@@ -49,6 +51,7 @@ function renderCartItem(data) {
       <div class="cart-item-title">${data.title}</div>
       <div class="cart-item-description">${data.description}</div>
       <div class="cart-item-price">$ ${data.price}</div>
+      <div><button class="plus" onclick="plusItem(${data.id})">+</button>  ${data.count}  <button class="minus" onclick="minusItem(${data.id})">-</button></div>
     </div>
     <div class="cart-actions">
       <button class="remove-button" value="${data.id}">Remove from Cart</button>
@@ -169,12 +172,15 @@ function renderBlockBuy() {
   </select>
 
   <label for="quantityPrice">Total Price:</label>
-  <input type="number" id="quantityPrice" value="${getTotalPrice(
-    data
-  )}" required />
+  <input type="number" id="quantityPrice" value="${
+    getTotalPrice(data) * data.reduce((acc, data) => acc + data.count, 0)
+  }" required />
 
   <label for="quantity">Quantity of Products:</label>
-  <input type="number" id="quantity" value="${data.length}" required />
+  <input type="number" id="quantity" value="${data.reduce(
+    (acc, data) => acc + data.count,
+    0
+  )}" required />
 
   <label for="comment">Order Comment:</label>
   <textarea id="comment"></textarea>
@@ -214,4 +220,51 @@ function renderSuccessResult(elements) {
 
 function addCitiesToSelect(city) {
   return `<option value="${city}">${city}</option>`;
+}
+
+function plusItem(id, action) {
+  const productArrayFromStorage = JSON.parse(
+    localStorage.getItem("product-cart")
+  );
+  const productDataArray = productArrayFromStorage
+    ? productArrayFromStorage
+    : [];
+  const productPromise = getByIdCard(id);
+  productPromise.then((data) => {
+    const newProduct = productDataArray.find((i) => i.id === parseInt(data.id));
+    newProduct.count = newProduct.count + 1;
+    const newArrayProduct = productDataArray.filter(
+      (i) => i.id !== parseInt(data.id)
+    );
+    newArrayProduct.push(newProduct);
+    localStorage.setItem("product-cart", JSON.stringify(newArrayProduct));
+    const response = getItemFromLocaleStorage();
+    renderCart(response);
+  });
+}
+
+function minusItem(id) {
+  const productArrayFromStorage = JSON.parse(
+    localStorage.getItem("product-cart")
+  );
+  const productDataArray = productArrayFromStorage
+    ? productArrayFromStorage
+    : [];
+  const productPromise = getByIdCard(id);
+  productPromise.then((data) => {
+    const newProduct = productDataArray.find((i) => i.id === parseInt(data.id));
+    if (newProduct.count === 1) {
+      removeFromCart(data.id);
+      const response = getItemFromLocaleStorage();
+      return renderCart(response);
+    }
+    newProduct.count = newProduct.count - 1;
+    const newArrayProduct = productDataArray.filter(
+      (i) => i.id !== parseInt(data.id)
+    );
+    newArrayProduct.push(newProduct);
+    localStorage.setItem("product-cart", JSON.stringify(newArrayProduct));
+    const response = getItemFromLocaleStorage();
+    renderCart(response);
+  });
 }

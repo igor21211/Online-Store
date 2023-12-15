@@ -25,12 +25,9 @@ function renderHeader() {
 }
 
 function getCountInCart() {
-  const count = JSON.parse(localStorage.getItem("product-cart"));
-  console.log(count);
-  if (!count) {
-    return 0;
-  }
-  return count.length;
+  const data = JSON.parse(localStorage.getItem("product-cart"));
+  const count = data.reduce((acc, data) => acc + data.count, 0);
+  return count;
 }
 renderHeader();
 
@@ -38,7 +35,9 @@ mainenDiv.addEventListener("click", function (e) {
   if (
     e.target.textContent === "Add to Cart" ||
     e.target.textContent === "Place Order" ||
-    e.target.textContent === "Remove from Cart"
+    e.target.textContent === "Remove from Cart" ||
+    e.target.textContent === "+" ||
+    e.target.textContent === "-"
   ) {
     setTimeout(() => {
       renderHeader();
