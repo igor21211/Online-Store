@@ -223,7 +223,7 @@ function addCitiesToSelect(city) {
   return `<option value="${city}">${city}</option>`;
 }
 
-function plusItem(id, action) {
+function plusItem(id) {
   const productArrayFromStorage = JSON.parse(
     localStorage.getItem("product-cart")
   );
@@ -233,11 +233,12 @@ function plusItem(id, action) {
   const productPromise = getByIdCard(id);
   productPromise.then((data) => {
     const newProduct = productDataArray.find((i) => i.id === parseInt(data.id));
+    const index = productDataArray.indexOf(newProduct);
     newProduct.count = newProduct.count + 1;
     const newArrayProduct = productDataArray.filter(
       (i) => i.id !== parseInt(data.id)
     );
-    newArrayProduct.push(newProduct);
+    newArrayProduct.splice(index, 0, newProduct);
     localStorage.setItem("product-cart", JSON.stringify(newArrayProduct));
     const response = getItemFromLocaleStorage();
     renderCart(response);
@@ -254,6 +255,7 @@ function minusItem(id) {
   const productPromise = getByIdCard(id);
   productPromise.then((data) => {
     const newProduct = productDataArray.find((i) => i.id === parseInt(data.id));
+    const index = productDataArray.indexOf(newProduct);
     if (newProduct.count === 1) {
       removeFromCart(data.id);
       const response = getItemFromLocaleStorage();
@@ -263,7 +265,7 @@ function minusItem(id) {
     const newArrayProduct = productDataArray.filter(
       (i) => i.id !== parseInt(data.id)
     );
-    newArrayProduct.push(newProduct);
+    newArrayProduct.splice(index, 0, newProduct);
     localStorage.setItem("product-cart", JSON.stringify(newArrayProduct));
     const response = getItemFromLocaleStorage();
     renderCart(response);
