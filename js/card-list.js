@@ -74,6 +74,7 @@ function renderCardList(data) {
     btnEl.value = element.id;
     btnEl.textContent = "Add to Cart";
     aEl.classList.add("link-card");
+    aEl.href = `#${element.id}`;
     imgEl.src = element.thumbnail;
     h3El.textContent = element.title;
     pEl.textContent = element.description;
