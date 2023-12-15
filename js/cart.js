@@ -20,9 +20,8 @@ function getItemFromLocaleStorage() {
 }
 
 function renderCart(data) {
-  console.log(data);
   mainendDiv.innerHTML = "";
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     return (mainendDiv.innerHTML =
       "<div><h1>Not any product on the Cart</h1></div>");
   }
