@@ -76,14 +76,28 @@ mainDiv.addEventListener("click", function (e) {
     target.textContent === "Add to Cart" &&
     target.classList.value === "card-button"
   ) {
-    const productArrayFromStorage = localStorage.getItem("product-cart");
+    const productArrayFromStorage = JSON.parse(
+      localStorage.getItem("product-cart")
+    );
     const productDataArray = productArrayFromStorage
-      ? JSON.parse(productArrayFromStorage)
+      ? productArrayFromStorage
       : [];
 
     const productPromise = getByIdCard(target.value);
     productPromise.then((data) => {
-      productDataArray.push(data);
+      if (productDataArray.some((i) => i.id === data.id)) {
+        const newProduct = productDataArray.find(
+          (i) => i.id === parseInt(data.id)
+        );
+        newProduct.count = newProduct.count + 1;
+        const newArrayProduct = productDataArray.filter(
+          (i) => i.id !== parseInt(data.id)
+        );
+        newArrayProduct.push(newProduct);
+        localStorage.setItem("product-cart", JSON.stringify(newArrayProduct));
+        return;
+      }
+      productDataArray.push({ ...data, count: 1 });
       localStorage.setItem("product-cart", JSON.stringify(productDataArray));
       renderCard(data);
     });
